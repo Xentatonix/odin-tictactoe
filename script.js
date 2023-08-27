@@ -44,8 +44,46 @@ const gameBoard = (() => {
         }
     }
 
+    const checkWin = (sym) => {
+        const lineCheck = sqr => sqr === sym;
+    
+        // row check
+        for (let row=0; row < 3; row++){
+            if (gameBoard.board[row].every(lineCheck)) return true;
+        }
+    
+        // col check
+        for (let col=0; col < 3; col++){
+            let colArray = [];
+            for (let row=0; row < 3; row++) {
+                colArray.push(gameBoard.board[row][col])
+            }
+            if (colArray.every(lineCheck)) return true;
+        }
+    
+        // Diagonal check
+    
+        // 0,0 to 2,2 diagonal
+        let downDiagArray = [];
+        for (let i=0; i<3; i++){
+            downDiagArray.push(gameBoard.board[i][i])
+        }
+        if (downDiagArray.every(lineCheck)) return true;
+    
+        // 2,0 to 0,2 diagonal
+        let upDiagArray = [];
+        for (let row=2; row >= 0; row--){
+            for (let col=0; col > 3; col++){
+                upDiagArray.push(gameBoard.board[row][col])
+            }
+        }
+        if (downDiagArray.every(lineCheck)) return true;
+    
+        return false;
+    }
+
     return { 
-        board
+        board, checkWin
     }
 
 })()
@@ -71,40 +109,6 @@ const playerO = playerFactory("O");
 // After each marked square check the next adjacent squares
     // if the same mark continue an adjacent check
 
-const checkWin = (sym) => {
-    const lineCheck = sqr => sqr === sym;
 
-    // row check
-    for (let row=0; row < 3; row++){
-        if (gameBoard.board[row].every(lineCheck)) return true;
-    }
 
-    // col check
-    for (let col=0; col < 3; col++){
-        let colArray = [];
-        for (let row=0; row < 3; row++) {
-            colArray.push(gameBoard.board[row][col])
-        }
-        if (colArray.every(lineCheck)) return true;
-    }
 
-    // Diagonal check
-
-    // 0,0 to 2,2 diagonal
-    let downDiagArray = [];
-    for (let i=0; i<3; i++){
-        downDiagArray.push(gameBoard.board[i][i])
-    }
-    if (downDiagArray.every(lineCheck)) return true;
-
-    // 2,0 to 0,2 diagonal
-    let upDiagArray = [];
-    for (let row=2; row >= 0; row--){
-        for (let col=0; col > 3; col++){
-            upDiagArray.push(gameBoard.board[row][col])
-        }
-    }
-    if (downDiagArray.every(lineCheck)) return true;
-
-    return false;
-}
