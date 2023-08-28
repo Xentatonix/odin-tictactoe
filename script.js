@@ -44,12 +44,12 @@ const gameBoard = (() => {
         }
     }
 
-    const checkWin = (sym) => {
-        const lineCheck = sqr => sqr === sym;
+    const checkWin = (player) => {
+        const lineCheck = sqr => sqr === player.sym;
     
         // row check
         for (let row=0; row < 3; row++){
-            if (gameBoard.board[row].every(lineCheck)) return true;
+            if (gameBoard.board[row].every(lineCheck)) return `Player ${player.sym} Wins`;
         }
     
         // col check
@@ -58,7 +58,7 @@ const gameBoard = (() => {
             for (let row=0; row < 3; row++) {
                 colArray.push(gameBoard.board[row][col])
             }
-            if (colArray.every(lineCheck)) return true;
+            if (colArray.every(lineCheck)) return `Player ${player.sym} Wins`;
         }
     
         // Diagonal check
@@ -68,7 +68,7 @@ const gameBoard = (() => {
         for (let i=0; i<3; i++){
             downDiagArray.push(gameBoard.board[i][i])
         }
-        if (downDiagArray.every(lineCheck)) return true;
+        if (downDiagArray.every(lineCheck)) return `Player ${player.sym} Wins`;
     
         // 2,0 to 0,2 diagonal
         let upDiagArray = [];
@@ -77,7 +77,7 @@ const gameBoard = (() => {
                 upDiagArray.push(gameBoard.board[row][col])
             }
         }
-        if (downDiagArray.every(lineCheck)) return true;
+        if (downDiagArray.every(lineCheck)) return `Player ${player.sym} Wins`;
     
         return false;
     }
@@ -97,7 +97,7 @@ const playerFactory = (sym) => {
         console.table(gameBoard.board)
     };
 
-    return { markSquare };
+    return { sym, markSquare };
 };
 
 const playerX = playerFactory("X");
@@ -110,5 +110,21 @@ const playerO = playerFactory("O");
     // if the same mark continue an adjacent check
 
 
+const playGame = (player1, player2) => {
+    // A turn is the move of one player
+    // A round is the move of both players
+    
+    const playTurn = (player) => {
+        let [row, col] = prompt("Enter co-ords: 'x,y'").split(","); 
+        player.markSquare(row, col);
+        
+    }
 
+    const playRound = (player1, player2, roundCounter) => {
+        playTurn(player1);
 
+    }
+
+}
+
+playGame(playerX, playerO)
